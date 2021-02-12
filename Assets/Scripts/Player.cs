@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
+    [SyncVar(hook = nameof(OnHolaCountChanged))]
+    int holaCount = 0;
+
     void HandleMovement()
     {
         if(isLocalPlayer)
@@ -40,6 +43,8 @@ public class Player : NetworkBehaviour
     void Hola()
     {
         Debug.Log("Received Hola from client"); // this will run on the server when it has been called from the client
+holaCount += 1;
+
         ReplyHola(); // we call via TargetRPC and this will run on the calling client - sends to the original calling client by default
             // but the function can take a conn so the client can be specified
     }
@@ -54,6 +59,11 @@ public class Player : NetworkBehaviour
     void ReplyHola()
     {
         Debug.Log("Received Hola from server");
+    }
+
+    void OnHolaCountChanged(int oldCount, int newCount)
+    {
+        Debug.Log("old count was " + oldCount.ToString() + "New count is " + newCount.ToString());
     }
 
 }
