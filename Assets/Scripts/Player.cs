@@ -24,5 +24,16 @@ public class Player : NetworkBehaviour
    void Update() 
    {
        HandleMovement();
+       if(isLocalPlayer && Input.GetKeyDown(KeyCode.X))
+       {
+           Debug.Log("Sending Hola to the server.");
+           Hola(); // call it from the client, nothing will happen on the client though
+       }
    }
+
+   [Command]
+    void Hola()
+    {
+        Debug.Log("Received Hola from client"); // this will run on the server when it has been called from the client
+    }
 }
